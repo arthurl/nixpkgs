@@ -19201,6 +19201,8 @@ in
 
   livepeer = callPackage ../servers/livepeer { };
 
+  lms = callPackage ../servers/misc/lms { };
+
   lwan = callPackage ../servers/http/lwan { };
 
   labelImg = callPackage ../applications/science/machine-learning/labelimg { };
