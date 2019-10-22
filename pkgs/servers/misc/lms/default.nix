@@ -4,7 +4,7 @@
 , autoreconfHook
 , pkgconfig
 , boost
-, ffmpeg
+, ffmpeg_4
 , imagemagick
 , libconfig
 , taglib
@@ -13,6 +13,8 @@
 }:
 
 let
+  ffmpeg = ffmpeg_4;
+
   # Wt with the minimum set of optional dependencies required for LMS
   wt-minimal = wt.override {
     # Docs not needed
