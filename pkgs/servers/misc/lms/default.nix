@@ -32,13 +32,13 @@ in
 
 stdenv.mkDerivation rec {
   pname = "lms";
-  version = "3.11.0";
+  version = "3.12.1";
 
   src = fetchFromGitHub {
     owner = "epoupon";
     repo = pname;
     rev = "v${version}";
-    sha256 = "0d6mv27akmy7php6cjxbijdwfwv0z85m9iry7brc6ih8fy8s227p";
+    sha256 = "1jmqd7yhkaqdbyx0idl1by2j09i0vggm0xh1h3swav4flc3jy6rl";
   };
 
   enableParallelBuilding = true;
