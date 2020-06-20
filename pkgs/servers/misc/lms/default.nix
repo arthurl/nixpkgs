@@ -77,21 +77,6 @@ stdenv.mkDerivation rec {
        	args.push_back(execPath);
        	args.push_back("--config=" + wtConfigPath.string());
     '')
-    (writeText "increase-artist-view-count.patch" ''
-      diff --git a/src/lms/ui/explore/ReleasesView.cpp b/src/lms/ui/explore/ReleasesView.cpp
-      index 55b2772..62525ef 100644
-      --- a/src/lms/ui/explore/ReleasesView.cpp
-      +++ b/src/lms/ui/explore/ReleasesView.cpp
-      @@ -84,7 +84,7 @@ Releases::addSome()
-       {
-       	bool moreResults {};
-       
-      -	const auto releasesId {getReleases(_container->count(), 20, moreResults)};
-      +	const auto releasesId {getReleases(_container->count(), 100, moreResults)};
-       	for (const Database::IdType releaseId : releasesId )
-       	{
-       		auto transaction {LmsApp->getDbSession().createSharedTransaction()};
-    '')
   ];
 
   meta = with stdenv.lib; {
