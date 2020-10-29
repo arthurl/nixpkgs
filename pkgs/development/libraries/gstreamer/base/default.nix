@@ -24,6 +24,7 @@
 , docbook_xml_dtd_43
 , enableX11 ? stdenv.isLinux
 , libXv
+, libXext
 , enableWayland ? stdenv.isLinux
 , wayland
 , wayland-protocols
@@ -89,6 +90,7 @@ stdenv.mkDerivation rec {
   ] ++ lib.optionals enableAlsa [
     alsaLib
   ] ++ lib.optionals enableX11 [
+    libXext
     libXv
     pango
   ] ++ lib.optionals enableWayland [
