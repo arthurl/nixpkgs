@@ -15,7 +15,7 @@
 , enableEmbyupdate     ? true
 , enableFetchart       ? true
 , enableGmusic         ? true
-, enableKeyfinder      ? true, keyfinder-cli ? null
+, enableKeyfinder      ? false, keyfinder-cli ? null
 , enableKodiupdate     ? true
 , enableLastfm         ? true
 , enableLoadext        ? true
