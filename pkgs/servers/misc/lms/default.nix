@@ -32,13 +32,13 @@ in
 
 stdenv.mkDerivation rec {
   pname = "lms";
-  version = "3.15.1";
+  version = "3.22.0";
 
   src = fetchFromGitHub {
     owner = "epoupon";
     repo = pname;
     rev = "v${version}";
-    sha256 = "16ip2fl180s9fdwxjqr5yllk7xny9kz28if8889f2ss676456khc";
+    sha256 = "1idky4wvkg66d4aab47pc6sv3lm07lzn2n1lic0hkhdaiisaq37n";
   };
 
   enableParallelBuilding = true;
@@ -51,31 +51,31 @@ stdenv.mkDerivation rec {
   patches = [
     (writeText "hardcode-dependency-paths.patch" ''
       diff --git a/src/libs/av/impl/AvTranscoder.cpp b/src/libs/av/impl/AvTranscoder.cpp
-      index fd6576f..420cb64 100644
+      index 574f829..fe557cb 100644
       --- a/src/libs/av/impl/AvTranscoder.cpp
       +++ b/src/libs/av/impl/AvTranscoder.cpp
       @@ -38,7 +38,7 @@ static std::filesystem::path	ffmpegPath;
        void
        Transcoder::init()
        {
-      -	ffmpegPath = ServiceProvider<IConfig>::get()->getPath("ffmpeg-file", "/usr/bin/ffmpeg");
-      +	ffmpegPath = ServiceProvider<IConfig>::get()->getPath("ffmpeg-file", "${ffmpeg.bin}/bin/ffmpeg");
+      -	ffmpegPath = Service<IConfig>::get()->getPath("ffmpeg-file", "/usr/bin/ffmpeg");
+      +	ffmpegPath = Service<IConfig>::get()->getPath("ffmpeg-file", "${ffmpeg.bin}/bin/ffmpeg");
        	if (!std::filesystem::exists(ffmpegPath))
        		throw LmsException {"File '" + ffmpegPath.string() + "' does not exist!"};
        }
       diff --git a/src/lms/main.cpp b/src/lms/main.cpp
-      index 44e3ea6..9fbde9c 100644
+      index 202b71d..d07201e 100644
       --- a/src/lms/main.cpp
       +++ b/src/lms/main.cpp
-      @@ -44,7 +44,7 @@ std::vector<std::string> generateWtConfig(std::string execPath)
-       	const std::filesystem::path wtConfigPath {ServiceProvider<IConfig>::get()->getPath("working-dir") / "wt_config.xml"};
-       	const std::filesystem::path wtLogFilePath {ServiceProvider<IConfig>::get()->getPath("log-file", "/var/log/lms.log")};
-       	const std::filesystem::path wtAccessLogFilePath {ServiceProvider<IConfig>::get()->getPath("access-log-file", "/var/log/lms.access.log")};
-      -	const std::filesystem::path wtResourcesPath {ServiceProvider<IConfig>::get()->getPath("wt-resources", "/usr/share/Wt/resources")};
-      +	const std::filesystem::path wtResourcesPath {ServiceProvider<IConfig>::get()->getPath("wt-resources", "${wt-lms}/share/Wt/resources")};
+      @@ -48,7 +48,7 @@ generateWtConfig(std::string execPath)
+       	const std::filesystem::path wtConfigPath {Service<IConfig>::get()->getPath("working-dir") / "wt_config.xml"};
+       	const std::filesystem::path wtLogFilePath {Service<IConfig>::get()->getPath("log-file", "/var/log/lms.log")};
+       	const std::filesystem::path wtAccessLogFilePath {Service<IConfig>::get()->getPath("access-log-file", "/var/log/lms.access.log")};
+      -	const std::filesystem::path wtResourcesPath {Service<IConfig>::get()->getPath("wt-resources", "/usr/share/Wt/resources")};
+      +	const std::filesystem::path wtResourcesPath {Service<IConfig>::get()->getPath("wt-resources", "${wt-lms}/share/Wt/resources")};
+       	const unsigned long configHttpServerThreadCount {Service<IConfig>::get()->getULong("http-server-thread-count", 0)};
        
        	args.push_back(execPath);
-       	args.push_back("--config=" + wtConfigPath.string());
     '')
   ];
 
