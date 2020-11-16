@@ -77,6 +77,21 @@ stdenv.mkDerivation rec {
        
        	args.push_back(execPath);
     '')
+    (writeText "increase-artist-view-count.patch" ''
+      diff --git a/src/lms/ui/explore/ReleasesView.hpp b/src/lms/ui/explore/ReleasesView.hpp
+      index 21e8e8e..b6baf4f 100644
+      --- a/src/lms/ui/explore/ReleasesView.hpp
+      +++ b/src/lms/ui/explore/ReleasesView.hpp
+      @@ -68,7 +68,7 @@ class Releases : public Wt::WTemplate
+       
+       		static constexpr Mode defaultMode {Mode::Random};
+       		static constexpr std::size_t maxItemsPerLine {6};
+      -		static constexpr std::size_t batchSize {maxItemsPerLine * 3};
+      +		static constexpr std::size_t batchSize {maxItemsPerLine * 15};
+       		static inline std::unordered_map<Mode, std::optional<std::size_t>> maxItemsPerMode
+       		{
+       			{Mode::Random, batchSize * 10},
+    '')
   ];
 
   meta = with stdenv.lib; {
