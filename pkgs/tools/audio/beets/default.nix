@@ -17,7 +17,7 @@
 , enableDiscogs          ? true
 , enableEmbyupdate       ? true
 , enableFetchart         ? true
-, enableKeyfinder        ? true, keyfinder-cli
+, enableKeyfinder        ? false, keyfinder-cli
 , enableKodiupdate       ? true
 , enableLastfm           ? true
 , enableLoadext          ? true
