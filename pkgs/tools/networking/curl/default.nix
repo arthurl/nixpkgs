@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, pkgconfig, perl
+{ stdenv, lib, fetchurl, writeText, pkgconfig, perl
 , http2Support ? true, nghttp2
 , idnSupport ? false, libidn ? null
 , ldapSupport ? false, openldap ? null
@@ -66,6 +66,61 @@ stdenv.mkDerivation rec {
     optional wolfsslSupport wolfssl ++
     optional scpSupport libssh2 ++
     optional brotliSupport brotli;
+
+  patches = [
+    (writeText "setup_User-Agent_at_pretransfer.patch" ''
+      diff --git a/lib/transfer.c b/lib/transfer.c
+      index bfd0218fe..ea37f741c 100644
+      --- a/lib/transfer.c
+      +++ b/lib/transfer.c
+      @@ -1532,6 +1532,20 @@ CURLcode Curl_pretransfer(struct Curl_easy *data)
+           Curl_hsts_loadcb(data, data->hsts);
+         }
+       
+      +  /*
+      +   * Set user-agent. Used for HTTP, but since we can attempt to tunnel
+      +   * basically anything through a http proxy we can't limit this based on
+      +   * protocol.
+      +   */
+      +  if(data->set.str[STRING_USERAGENT]) {
+      +    Curl_safefree(data->state.aptr.uagent);
+      +    data->state.aptr.uagent =
+      +      aprintf("User-Agent: %s\r\n", data->set.str[STRING_USERAGENT]);
+      +    if(!data->state.aptr.uagent)
+      +      return CURLE_OUT_OF_MEMORY;
+      +  }
+      +
+      +  data->req.headerbytecount = 0;
+         return result;
+       }
+       
+      diff --git a/lib/url.c b/lib/url.c
+      index 2b0ba87ba..3af3608d1 100644
+      --- a/lib/url.c
+      +++ b/lib/url.c
+      @@ -3940,20 +3940,6 @@ CURLcode Curl_setup_conn(struct connectdata *conn,
+            lingering set from a previous invoke */
+         conn->bits.proxy_connect_closed = FALSE;
+       #endif
+      -  /*
+      -   * Set user-agent. Used for HTTP, but since we can attempt to tunnel
+      -   * basically anything through a http proxy we can't limit this based on
+      -   * protocol.
+      -   */
+      -  if(data->set.str[STRING_USERAGENT]) {
+      -    Curl_safefree(data->state.aptr.uagent);
+      -    data->state.aptr.uagent =
+      -      aprintf("User-Agent: %s\r\n", data->set.str[STRING_USERAGENT]);
+      -    if(!data->state.aptr.uagent)
+      -      return CURLE_OUT_OF_MEMORY;
+      -  }
+      -
+      -  data->req.headerbytecount = 0;
+       
+       #ifdef CURL_DO_LINEEND_CONV
+         data->state.crlf_conversions = 0; /* reset CRLF conversion counter */
+    '')
+  ];
 
   # for the second line see https://curl.haxx.se/mail/tracker-2014-03/0087.html
   preConfigure = ''
