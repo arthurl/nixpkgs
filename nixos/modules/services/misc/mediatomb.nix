@@ -79,7 +79,7 @@ let
     <?xml version="1.0" encoding="UTF-8"?>
     <config version="2" xmlns="http://mediatomb.cc/config/2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://mediatomb.cc/config/2 http://mediatomb.cc/config/2.xsd">
         <server>
-          <ui enabled="yes" show-tooltips="yes">
+          <ui enabled="${optionYesNo cfg.enableUI}" show-tooltips="yes">
             <accounts enabled="no" session-timeout="30">
               <account user="${name}" password="${name}"/>
             </accounts>
@@ -349,6 +349,16 @@ in
             hidden-files = false;
           }
         ];
+      };
+
+      enableUI = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = ''
+          Whether to enable the web UI. Note that the web UI contains a file
+          browser, which means that anyone with access to the UI can browse your
+          filesystem.
+        '';
       };
 
       customCfg = lib.mkOption {
