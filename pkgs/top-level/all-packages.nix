@@ -25832,6 +25832,8 @@ with pkgs;
 
   lldap = callPackage ../servers/ldap/lldap { };
 
+  lms = callPackage ../servers/misc/lms { };
+
   lwan = callPackage ../servers/http/lwan { };
 
   labelImg = callPackage ../applications/science/machine-learning/labelimg { };
