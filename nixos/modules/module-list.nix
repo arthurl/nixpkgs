@@ -846,6 +846,7 @@
   ./services/misc/litellm.nix
   ./services/misc/llama-cpp.nix
   ./services/misc/logkeys.nix
+  ./services/misc/lms.nix
   ./services/misc/mame.nix
   ./services/misc/mbpfan.nix
   ./services/misc/mediatomb.nix
