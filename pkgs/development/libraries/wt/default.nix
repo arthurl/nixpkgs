@@ -1,6 +1,7 @@
 { lib, stdenv, fetchFromGitHub, cmake, boost, pkg-config, doxygen, qtbase, libharu
 , pango, fcgi, firebird, libmysqlclient, postgresql, graphicsmagick, glew, openssl
 , pcre, harfbuzz, icu
+, xorg
 }:
 
 let
@@ -22,6 +23,7 @@ let
         boost doxygen qtbase libharu
         pango fcgi firebird libmysqlclient postgresql graphicsmagick glew
         openssl pcre harfbuzz icu
+        xorg.libSM.dev
       ];
 
       dontWrapQtApps = true;
