@@ -10478,6 +10478,8 @@ with pkgs;
     nodejs = nodejs_20;
   };
 
+  lms = callPackage ../servers/misc/lms { };
+
   mailmanPackages = callPackage ../servers/mail/mailman { };
   inherit (mailmanPackages) mailman mailman-hyperkitty;
   mailman-web = mailmanPackages.web;
