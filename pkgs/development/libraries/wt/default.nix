@@ -19,6 +19,7 @@
   pcre,
   harfbuzz,
   icu,
+  xorg,
 }:
 
 let
@@ -55,6 +56,7 @@ let
         pcre
         harfbuzz
         icu
+        xorg.libSM.dev
       ];
 
       dontWrapQtApps = true;
