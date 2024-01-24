@@ -35,13 +35,13 @@ in
 
 stdenv.mkDerivation rec {
   pname = "lms";
-  version = "3.45.2";
+  version = "3.47.0";
 
   src = fetchFromGitHub {
     owner = "epoupon";
     repo = pname;
     rev = "v${version}";
-    sha256 = "sha256-7rxVdMGRBO3LKx50GOWUCdsCuNEI9GvubdQ+/vp1Y+k=";
+    sha256 = "sha256-Wfas5Use71B7ZB3GUoxDUenGzlGO1riugBjhiqNbWRk=";
   };
 
   nativeBuildInputs = [ cmake pkg-config gtest ];
