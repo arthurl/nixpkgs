@@ -79,6 +79,21 @@ stdenv.mkDerivation rec {
                args.push_back(execPath);
                args.push_back("--config=" + wtConfigPath.string());
     '')
+    (writeText "increase-album-view-count.patch" ''
+      diff --git a/src/lms/ui/explore/ReleasesView.hpp b/src/lms/ui/explore/ReleasesView.hpp
+      index e81dcc48..644e6aa8 100644
+      --- a/src/lms/ui/explore/ReleasesView.hpp
+      +++ b/src/lms/ui/explore/ReleasesView.hpp
+      @@ -44,7 +44,7 @@ namespace lms::ui
+               std::vector<db::ReleaseId> getAllReleases();
+       
+               static constexpr std::size_t _maxItemsPerLine{ 6 };
+      -        static constexpr std::size_t _batchSize{ _maxItemsPerLine };
+      +        static constexpr std::size_t _batchSize{ _maxItemsPerLine * 5 };
+               static constexpr std::size_t _maxCount{ _maxItemsPerLine * 500 };
+       
+               PlayQueueController& _playQueueController;
+    '')
   ];
 
   meta = with lib; {
