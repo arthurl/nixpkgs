@@ -35,13 +35,13 @@ in
 
 stdenv.mkDerivation rec {
   pname = "lms";
-  version = "3.54.0";
+  version = "3.63.0";
 
   src = fetchFromGitHub {
     owner = "epoupon";
     repo = pname;
     rev = "v${version}";
-    sha256 = "sha256-Ifib3t642eK04RqyZSx852z6o4Pm9ppYpCmKv+3S1EY=";
+    sha256 = "sha256-51qyO0OdAM9DAVc62MsQ0oidj7y1ozcObbQOrTawhAA=";
   };
 
   nativeBuildInputs = [ cmake pkg-config gtest ];
@@ -54,7 +54,7 @@ stdenv.mkDerivation rec {
     (writeText "insert-dependency-paths.patch" ''
       --- a/src/libs/av/impl/Transcoder.cpp
       +++ b/src/libs/av/impl/Transcoder.cpp
-      @@ -57,7 +57,7 @@ namespace lms::av::transcoding
+      @@ -58,7 +58,7 @@ namespace lms::av::transcoding
        
            void Transcoder::init()
            {
@@ -65,19 +65,17 @@ stdenv.mkDerivation rec {
            }
       --- a/src/lms/main.cpp
       +++ b/src/lms/main.cpp
-      @@ -97,7 +97,7 @@ namespace lms
-               const std::filesystem::path wtConfigPath{ core::Service<core::IConfig>::get()->getPath("working-dir") / "wt_config.xml" };
-               const std::filesystem::path wtLogFilePath{ core::Service<core::IConfig>::get()->getPath("log-file", "/var/log/lms.log") };
-               const std::filesystem::path wtAccessLogFilePath{ core::Service<core::IConfig>::get()->getPath("access-log-file", "/var/log/lms.access.log") };
-      -        const std::filesystem::path wtResourcesPath{ core::Service<core::IConfig>::get()->getPath("wt-resources", "/usr/share/Wt/resources") };
-      +        const std::filesystem::path wtResourcesPath{ core::Service<core::IConfig>::get()->getPath("wt-resources", "${wt-lms}/share/Wt/resources") };
+      @@ -116,7 +116,7 @@ namespace lms
+                   const std::filesystem::path wtConfigPath{ config.getPath("working-dir", "/var/lms") / "wt_config.xml" };
+                   const std::filesystem::path wtLogFilePath{ config.getPath("log-file", "") };
+                   const std::filesystem::path wtAccessLogFilePath{ config.getPath("access-log-file", "") };
+      -            const std::filesystem::path wtResourcesPath{ config.getPath("wt-resources", "/usr/share/Wt/resources") };
+      +            const std::filesystem::path wtResourcesPath{ config.getPath("wt-resources", "${wt-lms}/share/Wt/resources") };
        
-               args.push_back(execPath);
-               args.push_back("--config=" + wtConfigPath.string());
+                   args.push_back(execPath);
+                   args.push_back("--config=" + wtConfigPath.string());
     '')
     (writeText "increase-album-view-count.patch" ''
-      diff --git a/src/lms/ui/explore/ReleasesView.hpp b/src/lms/ui/explore/ReleasesView.hpp
-      index e81dcc48..644e6aa8 100644
       --- a/src/lms/ui/explore/ReleasesView.hpp
       +++ b/src/lms/ui/explore/ReleasesView.hpp
       @@ -44,7 +44,7 @@ namespace lms::ui
