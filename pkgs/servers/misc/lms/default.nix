@@ -13,6 +13,7 @@
 , libconfig
 , taglib
 , wt, useMinimalWt ? false
+, xxHash
 }:
 
 let
@@ -35,18 +36,18 @@ in
 
 stdenv.mkDerivation rec {
   pname = "lms";
-  version = "3.63.0";
+  version = "3.65.0";
 
   src = fetchFromGitHub {
     owner = "epoupon";
     repo = pname;
     rev = "v${version}";
-    sha256 = "sha256-51qyO0OdAM9DAVc62MsQ0oidj7y1ozcObbQOrTawhAA=";
+    sha256 = "sha256-H+ibj7eroIWti2Mxa+V5pzE1NE7b3H3/ThVIDqweWf8=";
   };
 
   nativeBuildInputs = [ cmake pkg-config gtest ];
   buildInputs = [
-    boost.dev zlib.dev libarchive.dev ffmpeg.dev stb libconfig taglib wt-lms
+    boost.dev zlib.dev libarchive.dev ffmpeg.dev stb libconfig taglib wt-lms xxHash
   ];
   cmakeFlags = [ "-DIMAGE_LIBRARY=STB" "-DCMAKE_BUILD_TYPE=Debug" ];
 
@@ -78,7 +79,7 @@ stdenv.mkDerivation rec {
     (writeText "increase-album-view-count.patch" ''
       --- a/src/lms/ui/explore/ReleasesView.hpp
       +++ b/src/lms/ui/explore/ReleasesView.hpp
-      @@ -44,7 +44,7 @@ namespace lms::ui
+      @@ -42,7 +42,7 @@ namespace lms::ui
                std::vector<db::ReleaseId> getAllReleases();
        
                static constexpr std::size_t _maxItemsPerLine{ 6 };
